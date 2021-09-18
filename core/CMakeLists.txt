@@ -36,10 +36,22 @@ set( HEX_CORE_HEADERS
 	# CONFIGS
 	"${HEX_CORE_PUBLIC}cfg/hex_api.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_assert.hpp"
+	"${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_debug.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_memory.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
+	# MEMORY
+	"${HEX_CORE_PUBLIC}memory/IAllocator.hxx"
+	"${HEX_CORE_PUBLIC}memory/Allocator.hpp"
+	"${HEX_CORE_PUBLIC}memory/IMemoryManager.hxx"
+	"${HEX_CORE_PUBLIC}memory/MemoryManager.hpp"
+	"${HEX_CORE_PUBLIC}memory/IMemoryResource.hxx"
+	"${HEX_CORE_PUBLIC}memory/MemoryResource.hpp"
+	"${HEX_CORE_PUBLIC}memory/MemoryBlock.hpp"
+	"${HEX_CORE_PUBLIC}memory/SharedPointer.hpp"
+	# ASYNC
+	"${HEX_CORE_PUBLIC}async/IMutex.hxx"
 	# RENDER
 	# LOGIC
 	# ASSETS
@@ -65,6 +77,13 @@ endif ( HEX_DEBUG )
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 set( HEX_CORE_SOURCES 
+	# MEMORY
+	"${HEX_CORE_PRIVATE}memory/Allocator.cpp"
+	"${HEX_CORE_PRIVATE}memory/MemoryManager.cpp"
+	"${HEX_CORE_PRIVATE}memory/MemoryResource.cpp"
+	"${HEX_CORE_PRIVATE}memory/MemoryBlock.cpp"
+	"${HEX_CORE_PRIVATE}memory/SharedPointer.cpp"
+	# ASYNC
 	# RENDER
 	# LOGIC
 	# ASSETS

@@ -27,8 +27,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-#ifndef HEX_CORE_SHARED_POINTER_HPP
-#define HEX_CORE_SHARED_POINTER_HPP
+#ifndef HEX_CORE_MEMORY_MANAGER_HPP
+#define HEX_CORE_MEMORY_MANAGER_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -37,9 +37,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Include hex::api
-#ifndef HEX_API_HPP
+#ifndef HEX_CORE_API
 #include "../cfg/hex_api.hpp"
-#endif // !HEX_API_HPP
+#endif // !HEX_CORE_API
+
+// Include hex::numeric
+#ifndef HEX_NUMERIC_HPP
+#include "../cfg/hex_numeric.hpp"
+#endif // !HEX_NUMERIC_HPP
 
 // DEBUG
 #ifdef HEX_MEMORY_DEBUG
@@ -51,6 +56,17 @@
 
 #endif
 // DEBUG
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::core::IMemoryResource
+#ifndef HEX_CORE_I_MEMORY_RESOURCE_DECL
+#define HEX_CORE_I_MEMORY_RESOURCE_DECL
+namespace hex { namespace core { class IMemoryResource; } }
+using hex_IMemoryResource = hex::core::IMemoryResource;
+#endif // !HEX_CORE_I_MEMORY_RESOURCE_DECL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -65,21 +81,20 @@ namespace hex
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// hex::core::SharedPointer
+		// hex::core::MemoryManager
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		/**
 		 * @brief
-		 * SharedPointer - simple shared pointer implementation
+		 * MemoryManager - memory management facade
 		 * 
 		 * @version 1.0
 		**/
-		template <typename T>
-		HEX_API class SharedPointer final
+		HEX_API class MemoryManager final
 		{
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+			
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// META
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -88,7 +103,7 @@ namespace hex
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		private:
+		protected:
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -96,7 +111,35 @@ namespace hex
 			// FIELDS
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			T* mAddress;
+			static MemoryManager* mInstance;
+
+			hex_IMemoryResource* mMemoryResource;
+
+			hex_size_t mBytesAllocated;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// CONSTRUCTOR
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * MemoryManager constructor
+			 * 
+			 * @param pResource - IMemoryResource implementation
+			 * 
+			 * @throws - no exceptions
+			**/
+			explicit MemoryManager( hex_IMemoryResource* const pResource );
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DELETED
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			MemoryManager( const MemoryManager& ) = delete;
+			MemoryManager( MemoryManager&& )      = delete;
+
+			MemoryManager& operator=( const MemoryManager& ) = delete;
+			MemoryManager& operator=( MemoryManager&& )      = delete;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -105,38 +148,16 @@ namespace hex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// CONSTRUCTORS
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-			/**
-			 * @brief
-			 * SharedPointer constructor
-			 * 
-			 * @param pAddress - address for pointer
-			 * 
-			 * @throws - can throw exception
-			**/
-			explicit SharedPointer( T* const pAddress = nullptr )
-				: mAddress( pAddress )
-			{
-#ifdef HEX_MEMORY_DEBUG // DEBUG
-
-#endif // !DEBUG
-			}
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// DESTRUCTOR
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			/**
 			 * @brief
-			 * SharedPointer destructor
+			 * MemoryManager destructor
 			 * 
 			 * @throws - no exceptions
 			**/
-			virtual ~SharedPointer() HEX_NOEXCEPT
-			{
-			}
+			~MemoryManager() HEX_NOEXCEPT;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// METHODS
@@ -144,28 +165,55 @@ namespace hex
 
 			/**
 			 * @brief
-			 * Reset pointer
+			 * Initialize MemoryManager
 			 * 
+			 * @param pResource - IMemoryResource implementation
+			 * 
+			 * @thread_safety - main-thread only
 			 * @throws - can throw exception
 			**/
-			T* Reset( T* const pAddress = nullptr )
-			{
-#ifdef HEX_MEMORY_DEBUG // DEBUG
-				
-#endif // DEBUG
-				T* const output( mAddress );
-				mAddress = pAddress;
+			static void Initialize( hex_IMemoryResource* const pResource );
 
-				return output;
-			}
+			/**
+			 * @brief
+			 * Terminate MemoryManager
+			 * 
+			 * @thread_safety - main-thread only
+			 * @throws - no exceptions
+			**/
+			static void Terminate() HEX_NOEXCEPT;
+
+			template <typename T>
+			static T* New()
+			{ return new T(); }
+
+			template <typename T, typename... _Types>
+			static T* New( _Types&&... _Args )
+			{ return new T( _Args... ); }
+
+			template <typename T>
+			static void Delete( T* const pInstance )
+			{ delete pInstance; }
+
+			template <typename T = void>
+			static void Delete( const T* const pInstance )
+			{ delete pInstance; }
+
+			template <typename T>
+			static T* NewArray( const size_t pSize )
+			{ return new T[pSize]; }
+
+			template <typename T = void>
+			static void DeleteArray( T* const pArray )
+			{ delete[] pArray; }
+
+			template <typename T = void>
+			static void DeleteArray( const T* const pArray )
+			{ delete[] pArray; }
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// OPERATORS
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-		}; /// hex::core::SharedPointer
+		}; /// hex::core::MemoryManager
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -173,11 +221,8 @@ namespace hex
 
 } /// hex
 
-template <typename T>
-using hex_SharedPointer = hex::core::SharedPointer<T>;
-
-#define HEX_CORE_SHARED_POINTER_DECL
+using hex_MemoryManager = hex::core::MemoryManager;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif // !HEX_CORE_SHARED_POINTER_HPP
+#endif // !HEX_CORE_MEMORY_MANAGER_HPP

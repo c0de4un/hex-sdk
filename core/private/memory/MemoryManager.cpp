@@ -27,46 +27,71 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-#ifndef HEX_MEMORY_HPP
-#define HEX_MEMORY_HPP
-
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::api
-#ifndef HEX_API_HPP
-#include "hex_api.hpp"
-#endif // !HEX_API_HPP
-
-// Include hex::core::MemoryManager
+// HEADER
 #ifndef HEX_CORE_MEMORY_MANAGER_HPP
-#include "../memory/MemoryManager.hpp"
+#include "../../public/memory/MemoryManager.hpp"
 #endif // !HEX_CORE_MEMORY_MANAGER_HPP
 
-// Include hex::core::SharedPointer
-#ifndef HEX_CORE_SHARED_POINTER_HPP
-#include "../memory/SharedPointer.hpp"
-#endif // !HEX_CORE_SHARED_POINTER_HPP
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TYPES
+// hex::core::MemoryManager
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-template <typename T>
-using hex_Shared = hex_SharedPointer<T>;
+namespace hex
+{
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// DEFINES
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+	namespace core
+	{
 
-#define hex_New hex_Memory::New
-#define hex_Delete(a) hex_Memory::Delete(a)
-#define hex_NewArray(a) hex_Memory::NewArray(a)
-#define hex_DeleteArray(a) hex_Memory::DeleteArray(a)
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// FIELDS
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		MemoryManager* MemoryManager::mInstance( nullptr );
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// CONSTRUCTOR & DESTRUCTOR
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		MemoryManager::MemoryManager( hex_IMemoryResource* const pResource )
+			: mMemoryResource( pResource )
+		{
+		}
+
+		MemoryManager::~MemoryManager() HEX_NOEXCEPT
+		{
+			delete mMemoryResource;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// METHODS
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		void MemoryManager::Initialize( hex_IMemoryResource* const pResource )
+		{
+#ifdef HEX_DEBUG_HPP // DEBUG
+			hex_assert( !mInstance & "MemoryManager::Initialize: already initialized !" );
+#endif // DEBUG
+
+			mInstance = new MemoryManager( pResource );
+		}
+
+		void MemoryManager::Terminate() HEX_NOEXCEPT
+		{
+			delete mInstance;
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	}
+
+}
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-#endif // !HEX_MEMORY_HPP

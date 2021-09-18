@@ -27,8 +27,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-#ifndef HEX_MEMORY_HPP
-#define HEX_MEMORY_HPP
+#ifndef HEX_CORE_BASE_MUTEX_HPP
+#define HEX_CORE_BASE_MUTEX_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -36,37 +36,16 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::api
-#ifndef HEX_API_HPP
-#include "hex_api.hpp"
-#endif // !HEX_API_HPP
+// HEADER
 
-// Include hex::core::MemoryManager
-#ifndef HEX_CORE_MEMORY_MANAGER_HPP
-#include "../memory/MemoryManager.hpp"
-#endif // !HEX_CORE_MEMORY_MANAGER_HPP
-
-// Include hex::core::SharedPointer
-#ifndef HEX_CORE_SHARED_POINTER_HPP
-#include "../memory/SharedPointer.hpp"
-#endif // !HEX_CORE_SHARED_POINTER_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-template <typename T>
-using hex_Shared = hex_SharedPointer<T>;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// DEFINES
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-#define hex_New hex_Memory::New
-#define hex_Delete(a) hex_Memory::Delete(a)
-#define hex_NewArray(a) hex_Memory::NewArray(a)
-#define hex_DeleteArray(a) hex_Memory::DeleteArray(a)
+#define HEX_CORE_BASE_MUTEX_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif // !HEX_MEMORY_HPP
+#endif // !HEX_CORE_BASE_MUTEX_HPP

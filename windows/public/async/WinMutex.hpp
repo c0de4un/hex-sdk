@@ -27,8 +27,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-#ifndef HEX_CORE_SHARED_POINTER_HPP
-#define HEX_CORE_SHARED_POINTER_HPP
+#ifndef HEX_WIN_MUTEX_HPP
+#define HEX_WIN_MUTEX_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -36,46 +36,49 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::api
-#ifndef HEX_API_HPP
-#include "../cfg/hex_api.hpp"
-#endif // !HEX_API_HPP
+// Include hex::core::IMutex
+#ifndef HEX_CORE_I_MUTEX_HXX
+#include "../../../core/public/async/IMutex.hxx"
+#endif // !HEX_CORE_I_MUTEX_HXX
 
-// DEBUG
-#ifdef HEX_MEMORY_DEBUG
+// Include hex::atomic
+#ifndef HEX_ATOMIC_HPP
+#include "../../../core/public/cfg/hex_atomic.hpp"
+#endif // !HEX_ATOMIC_HPP
 
-// Include hex::debug
-#ifndef HEX_DEBUG_HPP
-#include "../cfg/hex_debug.hpp"
-#endif // !HEX_DEBUG_HPP
+// Include hex::numeric
+#ifndef HEX_NUMERIC_HPP
+#include "../../../core/public/cfg/hex_numeric.hpp"
+#endif // !HEX_NUMERIC_HPP
 
-#endif
-// DEBUG
+// Include Windows API
+#include <Windows.h>
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TYPES
+//
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
 {
 
-	namespace core
+	namespace win
 	{
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// hex::core::SharedPointer
+		// hex::win::WinMutex
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		/**
 		 * @brief
-		 * SharedPointer - simple shared pointer implementation
+		 * WinMutex - Mutex implementation for Windows
+		 * 
+		 * Base on Critical-Section from Windows API
 		 * 
 		 * @version 1.0
 		**/
-		template <typename T>
-		HEX_API class SharedPointer final
+		HEX_API class WinMutex final : public hex_IMutex
 		{
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -93,10 +96,57 @@ namespace hex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// TYPES
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			using win_mutex_t = CRITICAL_SECTION;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// CONSTANTS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			static constexpr const hex_uint8_t MAX_LOCK_TRIES = 255;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// FIELDS
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			T* mAddress;
+			hex_aflag mReadFlag;
+			win_mutex_t mMutex;
+			hex_atomic<hex_uint8_t> mWritersCounter;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// METHODS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * Wait for all readers to stop
+			 * 
+			 * @thread_safety - atomic-flag used
+			 * @return - 'true' if no readers left, 'false' if await-limit exceeded
+			**/
+			inline bool waitExclusive() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		protected:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// METHODS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DELETED
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			WinMutex( const WinMutex& ) = delete;
+			WinMutex( WinMutex&& ) = delete;
+
+			WinMutex& operator=( const WinMutex& ) = delete;
+			WinMutex& operator=( WinMutex&& ) = delete;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -105,79 +155,96 @@ namespace hex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// CONSTRUCTORS
+			// CONSTRUCTOR & DESTRUCTOR
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			explicit WinMutex();
+
+			virtual ~WinMutex() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// GETTERS & SETTERS: IMutex
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			* @brief
+			* 
+			* @thread_safety - 
+			* @throws - no exceptions
+			**/
+			virtual bool isLocked() const HEX_NOEXCEPT final;
+
+			/**
+			* @brief
+			* Returns native-handler
+			* 
+			* @thread_safety - 
+			* @throws - no exceptions
+			**/
+			virtual void* native_handler() HEX_NOEXCEPT final;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// OVERRIDE: IMutex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			/**
 			 * @brief
-			 * SharedPointer constructor
-			 * 
-			 * @param pAddress - address for pointer
 			 * 
 			 * @throws - can throw exception
 			**/
-			explicit SharedPointer( T* const pAddress = nullptr )
-				: mAddress( pAddress )
-			{
-#ifdef HEX_MEMORY_DEBUG // DEBUG
-
-#endif // !DEBUG
-			}
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// DESTRUCTOR
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			virtual void lock() final;
 
 			/**
 			 * @brief
-			 * SharedPointer destructor
+			 * 
+			 * @throws - can throw exception
+			**/
+			virtual bool try_lock() final;
+
+			/**
+			* @brief
+			 * 
+			 * @throws - can throw exception
+			**/
+			virtual void unlock() HEX_NOEXCEPT final;
+
+			/**
+			 * @brief
+			 * Lock only, if writing in on
+			 * 
+			 * @throws - can throw exception
+			**/
+			virtual void lock_shared() final;
+
+			/**
+			 * @brief
+			 * Try to Lock only, if writing is on
+			 * 
+			 * @return - 'true' if locked, 'false'
+			 * @throws - can throw exception
+			**/
+			virtual bool try_lock_shared() final;
+
+			/**
+			 * @brief
+			 * Unlock
 			 * 
 			 * @throws - no exceptions
 			**/
-			virtual ~SharedPointer() HEX_NOEXCEPT
-			{
-			}
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// METHODS
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-			/**
-			 * @brief
-			 * Reset pointer
-			 * 
-			 * @throws - can throw exception
-			**/
-			T* Reset( T* const pAddress = nullptr )
-			{
-#ifdef HEX_MEMORY_DEBUG // DEBUG
-				
-#endif // DEBUG
-				T* const output( mAddress );
-				mAddress = pAddress;
-
-				return output;
-			}
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// OPERATORS
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			virtual void unlock_shared() HEX_NOEXCEPT final;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		}; /// hex::core::SharedPointer
+		}; /// hex::win::WinMutex
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-	} /// hex::core
+	} /// hex::win
 
 } /// hex
 
-template <typename T>
-using hex_SharedPointer = hex::core::SharedPointer<T>;
-
-#define HEX_CORE_SHARED_POINTER_DECL
+#define HEX_WIN_MUTEX_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif // !HEX_CORE_SHARED_POINTER_HPP
+#endif // !HEX_WIN_MUTEX_HPP

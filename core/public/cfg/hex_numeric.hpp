@@ -64,6 +64,8 @@ using hex_uint32_t = std::uint32_t;
 using hex_int64_t  = std::int64_t;
 using hex_uint64_t = std::uint64_t;
 
+using hex_size_t = std::size_t;
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 #endif // !HEX_NUMERIC_HPP

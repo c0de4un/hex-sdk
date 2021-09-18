@@ -32,7 +32,8 @@ project( ${PROJECT_NAME} VERSION ${PROJECT_VERSION} DESCRIPTION ${PROJECT_DESCRI
 # HEADERS
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-set( HEX_WIN_HEADERS "" )
+set( HEX_WIN_HEADERS
+	"${HEX_WIN_PUBLIC}async/WinMutex.hpp" )
 
 # DEBUG
 if ( HEX_DEBUG )
@@ -44,7 +45,8 @@ endif ( HEX_DEBUG )
 # SOURCES
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-set( HEX_WIN_SOURCES "" )
+set( HEX_WIN_SOURCES
+	"${HEX_WIN_PRIVATE}async/WinMutex.cpp" )
 
 # DEBUG
 if ( HEX_DEBUG )
@@ -58,6 +60,9 @@ endif ( HEX_DEBUG )
 
 # Create STATIC-Library Object
 add_library( hexEngine_Windows_Lib STATIC ${HEX_WIN_HEADERS} ${HEX_WIN_SOURCES} )
+
+# Include hexEngine.Core
+target_include_directories( hexEngine_Windows_Lib PUBLIC "${HEX_DIR}/core/public" )
 
 # Configure Library Object
 set_target_properties( hexEngine_Windows_Lib PROPERTIES
