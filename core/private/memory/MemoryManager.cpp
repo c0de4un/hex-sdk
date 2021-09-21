@@ -38,6 +38,11 @@
 #include "../../public/memory/MemoryManager.hpp"
 #endif // !HEX_CORE_MEMORY_MANAGER_HPP
 
+// Include hex::core::IMemoryManager
+#ifndef HEX_CORE_I_MEMORY_MANAGER_HXX
+#include "../../public/memory/IMemoryManager.hxx"
+#endif // !HEX_CORE_I_MEMORY_MANAGER_HXX
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // hex::core::MemoryManager
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -54,38 +59,51 @@ namespace hex
 		// FIELDS
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		MemoryManager* MemoryManager::mInstance( nullptr );
+		IMemoryManager* MemoryManager::mInstance( nullptr );
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// CONSTRUCTOR & DESTRUCTOR
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		MemoryManager::MemoryManager( hex_IMemoryResource* const pResource )
-			: mMemoryResource( pResource )
-		{
-		}
+		MemoryManager::MemoryManager() = default;
 
-		MemoryManager::~MemoryManager() HEX_NOEXCEPT
-		{
-			delete mMemoryResource;
-		}
+		MemoryManager::~MemoryManager() HEX_NOEXCEPT = default;
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 		// METHODS
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		void MemoryManager::Initialize( hex_IMemoryResource* const pResource )
+		void MemoryManager::Initialize( IMemoryManager* const pManager )
 		{
-#ifdef HEX_DEBUG_HPP // DEBUG
-			hex_assert( !mInstance & "MemoryManager::Initialize: already initialized !" );
+#ifdef HEX_DEBUG // DEBUG
+			hex_assert( !mInstance && "MemoryManager::Initialize: already initialized !" );
 #endif // DEBUG
 
-			mInstance = new MemoryManager( pResource );
+			mInstance = pManager;
 		}
 
 		void MemoryManager::Terminate() HEX_NOEXCEPT
 		{
 			delete mInstance;
+			mInstance = nullptr;
+		}
+
+		void MemoryManager::addReference( void* const pAddress, const hex_size_t pLength )
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_assert( mInstance && "MemoryManager::addReference: Not Initialized !" );
+#endif // DEBUG
+
+			mInstance->onReference( pAddress, pLength );
+		}
+
+		void MemoryManager::removeReference( void* const pAddress, const hex_size_t pLength )
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_assert( mInstance && "MemoryManager::removeReference: Not Initialized !" );
+#endif // DEBUG
+
+			mInstance->onUnreference( pAddress, pLength );
 		}
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

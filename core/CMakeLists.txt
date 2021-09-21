@@ -52,6 +52,8 @@ set( HEX_CORE_HEADERS
 	"${HEX_CORE_PUBLIC}memory/SharedPointer.hpp"
 	# ASYNC
 	"${HEX_CORE_PUBLIC}async/IMutex.hxx"
+	"${HEX_CORE_PUBLIC}async/IMutexFactory.hxx"
+	"${HEX_CORE_PUBLIC}async/MutexFactory.hpp"
 	# RENDER
 	# LOGIC
 	# ASSETS
@@ -84,6 +86,7 @@ set( HEX_CORE_SOURCES
 	"${HEX_CORE_PRIVATE}memory/MemoryBlock.cpp"
 	"${HEX_CORE_PRIVATE}memory/SharedPointer.cpp"
 	# ASYNC
+	"${HEX_CORE_PRIVATE}async/MutexFactory.cpp"
 	# RENDER
 	# LOGIC
 	# ASSETS

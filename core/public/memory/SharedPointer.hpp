@@ -41,8 +41,13 @@
 #include "../cfg/hex_api.hpp"
 #endif // !HEX_API_HPP
 
+// Include hex::core::MemoryManager
+#ifndef HEX_CORE_MEMORY_MANAGER_HPP
+#include "../memory/MemoryManager.hpp"
+#endif // !HEX_CORE_MEMORY_MANAGER_HPP
+
 // DEBUG
-#ifdef HEX_MEMORY_DEBUG
+#ifdef HEX_DEBUG
 
 // Include hex::debug
 #ifndef HEX_DEBUG_HPP
@@ -92,6 +97,8 @@ namespace hex
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+			static constexpr const hex_size_t LENGTH = sizeof(T);
+
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// FIELDS
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -119,9 +126,8 @@ namespace hex
 			explicit SharedPointer( T* const pAddress = nullptr )
 				: mAddress( pAddress )
 			{
-#ifdef HEX_MEMORY_DEBUG // DEBUG
-
-#endif // !DEBUG
+				if ( mAddress )
+					hex_Memory::addReference( mAddress, LENGTH );
 			}
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -136,6 +142,8 @@ namespace hex
 			**/
 			virtual ~SharedPointer() HEX_NOEXCEPT
 			{
+				if ( mAddress )
+					hex_Memory::removeReference( mAddress, LENGTH );
 			}
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -151,9 +159,12 @@ namespace hex
 			T* Reset( T* const pAddress = nullptr )
 			{
 #ifdef HEX_MEMORY_DEBUG // DEBUG
-				
 #endif // DEBUG
 				T* const output( mAddress );
+
+				if ( mAddress )
+					hex_Memory::removeReference( mAddress, LENGTH );
+
 				mAddress = pAddress;
 
 				return output;

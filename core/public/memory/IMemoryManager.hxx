@@ -36,6 +36,11 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// Include hex::numeric
+#ifndef HEX_NUMERIC_HPP
+#include "../cfg/hex_numeric.hpp"
+#endif // !HEX_NUMERIC_HPP
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -48,11 +53,71 @@ namespace hex
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+		/**
+		 * @brief
+		 * IMemoryManger - memory manager contract
+		 * 
+		 * @version 1.0
+		**/
+		HEX_API class IMemoryManager
+		{
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// META
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			HEX_INTERFACE
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		public:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DESTRUCTOR
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			virtual ~IMemoryManager() HEX_NOEXCEPT = default;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// METHODS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * Called to add reference to Object
+			 * 
+			 * @param pAddress - Object address
+			 * @param pBytes - Object length in bytes
+			 * 
+			 * @throws - can throw exception
+			 * @thread_safety - thread-locks used
+			**/
+			virtual void onReference( void* const pAddress, const hex_size_t pBytes ) = 0;
+
+			/**
+			 * @brief
+			 * Called to remove reference to Object
+			 * 
+			 * @throws - can throw exception
+			 * @thread_safety - thread-locks used
+			**/
+			virtual void onUnreference( void* const pAddress, const hex_size_t pBytes ) = 0;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		}; /// hex::core::IMemoryManager
+
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 	} /// hex::core
 
 } /// hex
+
+using hex_IMemoryManagr = hex::core::IMemoryManager;
 
 #define HEX_CORE_I_MEMORY_MANAGER_DECL
 

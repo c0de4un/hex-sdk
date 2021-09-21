@@ -36,18 +36,13 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::api
-#ifndef HEX_CORE_API
-#include "../cfg/hex_api.hpp"
-#endif // !HEX_CORE_API
-
 // Include hex::numeric
 #ifndef HEX_NUMERIC_HPP
 #include "../cfg/hex_numeric.hpp"
 #endif // !HEX_NUMERIC_HPP
 
 // DEBUG
-#ifdef HEX_MEMORY_DEBUG
+#ifdef HEX_DEBUG
 
 // Include hex::debug
 #ifndef HEX_DEBUG_HPP
@@ -61,12 +56,12 @@
 // FORWARD-DECLARATIONS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Forward-Declare hex::core::IMemoryResource
-#ifndef HEX_CORE_I_MEMORY_RESOURCE_DECL
-#define HEX_CORE_I_MEMORY_RESOURCE_DECL
-namespace hex { namespace core { class IMemoryResource; } }
-using hex_IMemoryResource = hex::core::IMemoryResource;
-#endif // !HEX_CORE_I_MEMORY_RESOURCE_DECL
+// Forward-Declare hex::core::IMemoryManager
+#ifndef HEX_CORE_I_MEMORY_MANAGER_DECL
+#define HEX_CORE_I_MEMORY_MANAGER_DECL
+namespace hex { namespace core { class IMemoryManager; } }
+using hex_IMemoryManagr = hex::core::IMemoryManager;
+#endif // !HEX_CORE_I_MEMORY_MANAGER_DECL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -103,7 +98,7 @@ namespace hex
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		protected:
+		private:
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -111,11 +106,7 @@ namespace hex
 			// FIELDS
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			static MemoryManager* mInstance;
-
-			hex_IMemoryResource* mMemoryResource;
-
-			hex_size_t mBytesAllocated;
+			static IMemoryManager* mInstance;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// CONSTRUCTOR
@@ -125,11 +116,9 @@ namespace hex
 			 * @brief
 			 * MemoryManager constructor
 			 * 
-			 * @param pResource - IMemoryResource implementation
-			 * 
 			 * @throws - no exceptions
 			**/
-			explicit MemoryManager( hex_IMemoryResource* const pResource );
+			explicit MemoryManager();
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// DELETED
@@ -167,21 +156,39 @@ namespace hex
 			 * @brief
 			 * Initialize MemoryManager
 			 * 
-			 * @param pResource - IMemoryResource implementation
+			 * @param pManager - IMemoryManager instance
 			 * 
 			 * @thread_safety - main-thread only
 			 * @throws - can throw exception
 			**/
-			static void Initialize( hex_IMemoryResource* const pResource );
+			static void Initialize( IMemoryManager *const pManager );
 
 			/**
 			 * @brief
-			 * Terminate MemoryManager
+			 * Terminate IMemoryManager
 			 * 
 			 * @thread_safety - main-thread only
 			 * @throws - no exceptions
 			**/
 			static void Terminate() HEX_NOEXCEPT;
+
+			/**
+			 * @brief
+			 * Add Reference to an Object
+			 * 
+			 * @thread_safety - thread-locks used
+			 * @throws - can throw exception
+			**/
+			static void addReference( void* const pAddress, const hex_size_t pLength );
+
+			/**
+			* @brief
+			* Remove Reference to an Object
+			* 
+			* @thread_safety - thread-locks used
+			* @throws - can throw exception
+			**/
+			static void removeReference( void* const pAddress, const hex_size_t pLength );
 
 			template <typename T>
 			static T* New()
@@ -221,7 +228,7 @@ namespace hex
 
 } /// hex
 
-using hex_MemoryManager = hex::core::MemoryManager;
+using hex_Memory = hex::core::MemoryManager;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

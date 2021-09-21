@@ -243,6 +243,8 @@ namespace hex
 
 } /// hex
 
+using hex_Mutex = hex::win::WinMutex;
+
 #define HEX_WIN_MUTEX_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

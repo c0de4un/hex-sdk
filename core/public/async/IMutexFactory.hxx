@@ -27,19 +27,79 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
+#ifndef HEX_CORE_I_MUTEX_FACTORY_HXX
+#define HEX_CORE_I_MUTEX_FACTORY_HXX
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// HEADER
-#ifndef HEX_CORE_BASE_MUTEX_HPP
-#include "../../public/async/BaseMutex.hpp"
-#endif // !HEX_CORE_BASE_MUTEX_HPP
+// Include hex::api
+#ifndef HEX_API_HPP
+#inlcude "../cfg/hex_api.hpp"
+#endif // !HEX_API_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// hex::core::BaseMutex
+// TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+	namespace core
+	{
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// hex::core::IMutexFactory
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		/**
+		 * @brief
+		 * IMutexFactory - mutex factory contract
+		 * 
+		 * @version 1.0
+		**/
+		HEX_API class IMutexFactory
+		{
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// META
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			HEX_INTERFACE
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		public:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DESTRUCTOR
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// METHOD
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		}; /// hex::core::IMutexFactory
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	} /// hex::core
+
+} /// hex
+
+#define HEX_CORE_I_MUTEX_FACTORY_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#endif // !HEX_CORE_I_MUTEX_FACTORY_HXX

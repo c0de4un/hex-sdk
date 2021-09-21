@@ -39,7 +39,7 @@
 #endif // !HEX_WIN_MUTEX_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
+// hex::win::WinMutex
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex

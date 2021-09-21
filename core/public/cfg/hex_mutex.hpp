@@ -27,8 +27,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-#ifndef HEX_CORE_BASE_MUTEX_HPP
-#define HEX_CORE_BASE_MUTEX_HPP
+#ifndef HEX_MUTEX_HPP
+#define HEX_MUTEX_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -36,16 +36,10 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// HEADER
+// Include hex::core::MutexFactory
 
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TYPES
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-#define HEX_CORE_BASE_MUTEX_DECL
+// Include hex::core::IMutex
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif // !HEX_CORE_BASE_MUTEX_HPP
+#endif // !HEX_MUTEX_HPP
