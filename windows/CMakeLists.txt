@@ -33,6 +33,9 @@ project( ${PROJECT_NAME} VERSION ${PROJECT_VERSION} DESCRIPTION ${PROJECT_DESCRI
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 set( HEX_WIN_HEADERS
+	# APPLICATION
+	"${HEX_WIN_PUBLIC}app/WinApp.hpp"
+	# ASYNC
 	"${HEX_WIN_PUBLIC}async/WinMutex.hpp" )
 
 # DEBUG
@@ -46,6 +49,9 @@ endif ( HEX_DEBUG )
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 set( HEX_WIN_SOURCES
+	# APPLICATION
+	"${HEX_WIN_PRIVATE}app/WinApp.cpp"
+	# ASYNC
 	"${HEX_WIN_PRIVATE}async/WinMutex.cpp" )
 
 # DEBUG

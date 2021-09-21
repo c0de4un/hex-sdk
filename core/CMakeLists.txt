@@ -41,6 +41,12 @@ set( HEX_CORE_HEADERS
 	"${HEX_CORE_PUBLIC}cfg/hex_memory.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
+	# APPLICATION
+	"${HEX_CORE_PUBLIC}app/IApplication.hxx"
+	"${HEX_CORE_PUBLIC}app/BaseApplication.hpp"
+	"${HEX_CORE_PUBLIC}app/ApplicationManager.hpp"
+	# ECS
+	"${HEX_CORE_PUBLIC}ecs/systems/ISystem.hxx"
 	# MEMORY
 	"${HEX_CORE_PUBLIC}memory/IAllocator.hxx"
 	"${HEX_CORE_PUBLIC}memory/Allocator.hpp"
@@ -79,6 +85,9 @@ endif ( HEX_DEBUG )
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 set( HEX_CORE_SOURCES 
+	# APPLICATION
+	"${HEX_CORE_PRIVATE}app/BaseApplication.cpp"
+	"${HEX_CORE_PRIVATE}app/ApplicationManager.cpp"
 	# MEMORY
 	"${HEX_CORE_PRIVATE}memory/Allocator.cpp"
 	"${HEX_CORE_PRIVATE}memory/MemoryManager.cpp"
