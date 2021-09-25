@@ -33,29 +33,11 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// HEADER
-#ifndef HEX_CORE_APPLICATION_MANAGER_HPP
-#include "../../public/app/ApplicationManager.hpp"
-#endif // !HEX_CORE_APPLICATION_MANAGER_HPP
+// Include hex::api
 
-// Include hex::core::BaseApplication
-#ifndef HEX_CORE_BASE_APPLICATION_HPP
-#include "../../public/app/BaseApplication.hpp"
-#endif // !HEX_CORE_BASE_APPLICATION_HPP
-
-// DEBUG
-#ifdef HEX_DEBUG
-
-// Include hex::debug
-#ifndef HEX_DEBUG_HPP
-#include "../../public/cfg/hex_debug.hpp"
-#endif // !HEX_DEBUG_HPP
-
-#endif
-// DEBUG
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// hex::core::ApplicationManager
+// TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 namespace hex
@@ -67,60 +49,9 @@ namespace hex
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// FIELDS
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		hex_BaseApplication* ApplicationManager::mApplication( nullptr );
+	} /// hex::core
 
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// CONSTRUCTOR & DESTRUCTOR
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-		ApplicationManager::ApplicationManager() HEX_NOEXCEPT = default;
-
-		ApplicationManager::~ApplicationManager() HEX_NOEXCEPT = default;
-
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// GETTERS & SETTERS
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-		hex_BaseApplication* ApplicationManager::getApplication() HEX_NOEXCEPT
-		{ return mApplication; }
-
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// METHODS
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-		void ApplicationManager::Initialize( hex_BaseApplication* const pApplication )
-		{
-#ifdef HEX_DEBUG // DEBUG
-			hex_Log::Print( "ApplicationManager::Initialize", hex_ELogLevel::INFO );
-			hex_assert( !mApplication && "ApplicationManager::Initialize: already initialized !");
-#endif // DEBUG
-
-			mApplication = pApplication;
-
-			mApplication->onInitialized();
-			
-		}
-
-		void ApplicationManager::Terminate() HEX_NOEXCEPT
-		{
-#ifdef HEX_DEBUG // DEBUG
-			hex_Log::Print( "ApplicationManager::Terminate", hex_ELogLevel::INFO );
-#endif // DEBUG
-
-			if ( mApplication )
-				mApplication->onTerminate();
-
-			delete mApplication;
-			mApplication = nullptr;
-		}
-
-		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-	}
-
-}
+} /// hex
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

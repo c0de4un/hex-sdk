@@ -36,9 +36,142 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// Include hex::api
+#ifndef HEX_API_HPP
+#include "../cfg/hex_api.hpp"
+#endif // !HEX_API_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FORWARD-DECLARATIONS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Forward-Declare hex::core::BaseApplication
+#ifndef HEX_CORE_BASE_APPLICATION_DECL
+#define HEX_CORE_BASE_APPLICATION_DECL
+namespace hex { namespace core { class BaseApplication; } }
+using hex_BaseApplication = hex::core::BaseApplication;
+#endif // !HEX_CORE_I_APPLICATION_DECL
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+	namespace core
+	{
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// hex::core::ApplicationManager
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		/**
+		 * @brief
+		 * ApplicationManager - facade for platform-specific IApplication implementation
+		 * 
+		 * @version 1.0
+		**/
+		HEX_API class ApplicationManager final
+		{
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// META
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			HEX_CLASS
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		private:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// FIELDS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			static hex_BaseApplication* mApplication;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// CONSTRUCTOR
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			explicit ApplicationManager() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DELETED
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			ApplicationManager( const ApplicationManager& ) = delete;
+			ApplicationManager( ApplicationManager&& )      = delete;
+
+			ApplicationManager& operator=( const ApplicationManager& ) = delete;
+			ApplicationManager& operator=( ApplicationManager&& )      = delete;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		public:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DESTRUCTOR
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			~ApplicationManager() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// GETTERS & SETTERS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * Returns IApplication instance
+			 * 
+			 * @throws - no exceptions
+			**/
+			static hex_BaseApplication* getApplication() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// METHODS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * Initialize Application instance
+			 * 
+			 * @param pApp - IApplication implementation
+			 * 
+			 * @thread_safety - main-thread only
+			 * @throws - can throw exception
+			**/
+			static void Initialize( hex_BaseApplication* const pApplication );
+
+			/**
+			 * @brief
+			 * Terminate Application
+			 * 
+			 * @thread_safety - main-thread only
+			 * @throws - no exceptions
+			**/
+			static void Terminate() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		}; /// hex::core::ApplicationManager
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	} /// hex::core
+
+} /// hex
+
+using hex_ApplicationManager = hex::core::ApplicationManager;
 
 #define HEX_CORE_APPLICATION_MANAGER_DECL
 

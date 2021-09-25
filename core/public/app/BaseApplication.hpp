@@ -41,10 +41,10 @@
 #include "IApplication.hxx"
 #endif // !HEX_CORE_I_APPLICATION_HXX
 
-// Include hex::ecs::ISystem
-#ifndef HEX_ECS_I_SYSTEM_HXX
-#include "../ecs/systems/ISystem.hxx"
-#endif // !HEX_ECS_I_SYSTEM_HXX
+// Include hex::ecs::BaseSystem
+#ifndef HEX_CORE_BASE_SYSTEM_HPP
+#include "../ecs/systems/BaseSystem.hpp"
+#endif // !HEX_CORE_BASE_SYSTEM_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -64,11 +64,11 @@ namespace hex
 
 		/**
 		 * @brief
-		 * BaseApplication - 
+		 * BaseApplication
 		 * 
 		 * @version 1.0
 		**/
-		HEX_API class BaseApplication : public hex_ISystem, public hex_IApplication
+		HEX_API class BaseApplication : public hex_BaseSystem, public hex_IApplication
 		{
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -89,9 +89,23 @@ namespace hex
 			// CONSTRUCTOR
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+			/**
+			 * @brief
+			 * BaseApplication constructor
+			 * 
+			 * @throws - can throw exception
+			**/
+			explicit BaseApplication();
+
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// DELETED
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			BaseApplication( const BaseApplication& ) = delete;
+			BaseApplication( BaseApplication&& )      = delete;
+
+			BaseApplication& operator=( const BaseApplication& ) = delete;
+			BaseApplication& operator=( BaseApplication&& )      = delete;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -103,6 +117,14 @@ namespace hex
 			// DESTRUCTOR
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+			/**
+			 * @brief
+			 * BaseApplication destructor
+			 * 
+			 * @throws - no exceptions
+			**/
+			virtual ~BaseApplication() HEX_NOEXCEPT;
+
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		}; /// hex::core::BaseApplication
@@ -113,6 +135,7 @@ namespace hex
 
 } /// hex
 
+using hex_BaseApplication = hex::core::BaseApplication;
 #define HEX_CORE_BASE_APPLICATION_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

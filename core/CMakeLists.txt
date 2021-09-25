@@ -88,6 +88,8 @@ set( HEX_CORE_SOURCES
 	# APPLICATION
 	"${HEX_CORE_PRIVATE}app/BaseApplication.cpp"
 	"${HEX_CORE_PRIVATE}app/ApplicationManager.cpp"
+	# ECS
+	"${HEX_CORE_PRIVATE}ecs/systems/BaseSystem.cpp"
 	# MEMORY
 	"${HEX_CORE_PRIVATE}memory/Allocator.cpp"
 	"${HEX_CORE_PRIVATE}memory/MemoryManager.cpp"

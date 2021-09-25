@@ -37,6 +37,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Include hex::core::BaseApplication
+#ifndef HEX_CORE_BASE_SYSTEM_HPP
+#include "../../../core/public/app/BaseApplication.hpp"
+#endif // !HEX_CORE_BASE_SYSTEM_HPP
+
+// Include hex::core::ApplicationManager
+#ifndef HEX_CORE_APPLICATION_MANAGER_HPP
+#include "../../../core/public/app/ApplicationManager.hpp"
+#endif // !HEX_CORE_APPLICATION_MANAGER_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -54,7 +62,82 @@ namespace hex
 		// hex::win::WinApp
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+		/**
+		 * @brief
+		 * WinApp
+		 * 
+		 * @version 1.0
+		**/
+		HEX_API class WinApp final : public hex_BaseApplication
+		{
 
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// META
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			HEX_CLASS
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		private:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// FIELDS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		protected:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DELETED
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			WinApp( const WinApp& ) = delete;
+			WinApp( WinApp&& )      = delete;
+
+			WinApp& operator=( const WinApp& ) = delete;
+			WinApp& operator=( WinApp&& )      = delete;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		public:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// CONSTRUCTOR & DESTRUCTOR
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * WinApp constructor
+			 * 
+			 * @throws - can throw exception
+			**/
+			explicit WinApp();
+
+			/**
+			 * @brief
+			 * WinApp destructor
+			 * 
+			 * @throws - no exceptions
+			**/
+			virtual ~WinApp() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// OVERRIDE: BaseSystem
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		}; /// hex::win::WinApp
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -62,6 +145,7 @@ namespace hex
 
 } /// hex
 
+using hex_WinApp = hex::win::WinApp;
 #define HEX_WIN_APP_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

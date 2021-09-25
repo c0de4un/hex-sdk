@@ -33,4 +33,58 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// HEADER
+#ifndef HEX_CORE_BASE_APPLICATION_HPP
+#include "../../public/app/BaseApplication.hpp"
+#endif // !HEX_CORE_BASE_APPLICATION_HPP
+
+// DEBUG
+#if defined( HEX_DEBUG ) || defined( DEBUG )
+
+// Include hex::debug
+#ifndef HEX_DEBUG_HPP
+#include "../../public/cfg/hex_debug.hpp"
+#endif // !HEX_DEBUG_HPP
+
+#endif
+// DEBUG
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// hex::core::BaseApplication
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+	namespace core
+	{
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// CONSTRUCTOR & DESTRUCTOR
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		BaseApplication::BaseApplication()
+			:
+			BaseSystem()
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "BaseApplication::construct", hex_ELogLevel::INFO );
+#endif // DEBUG
+		}
+
+		BaseApplication::~BaseApplication() HEX_NOEXCEPT
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "BaseApplication::destruct", hex_ELogLevel::INFO );
+#endif // DEBUG
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	}
+
+}
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

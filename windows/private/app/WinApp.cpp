@@ -33,4 +33,58 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// HEADER
+#ifndef HEX_WIN_APP_HPP
+#include "../../public/app/WinApp.hpp"
+#endif // !HEX_WIN_APP_HPP
+
+// DEBUG
+#if defined( HEX_DEBUG ) || defined( DEBUG )
+
+// Include hex::debug
+#ifndef HEX_DEBUG_HPP
+#include "../../../core/public/cfg/hex_debug.hpp"
+#endif // !HEX_DEBUG_HPP
+
+#endif
+// DEBUG
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// hex::win::WinApp
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+	namespace win
+	{
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// CONSTRUCTOR & DESTRUCTOR
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		WinApp::WinApp()
+			:
+			BaseApplication()
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::construct", hex_ELogLevel::INFO );
+#endif // DEBUG
+		}
+
+		WinApp::~WinApp() HEX_NOEXCEPT
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::destruct", hex_ELogLevel::INFO );
+#endif // DEBUG
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	}
+
+}
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
