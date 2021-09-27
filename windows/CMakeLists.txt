@@ -36,6 +36,7 @@ set( HEX_WIN_HEADERS
 	# APPLICATION
 	"${HEX_WIN_PUBLIC}app/WinApp.hpp"
 	# ASYNC
+	"${HEX_WIN_PUBLIC}async/WinMutexFactory.hpp"
 	"${HEX_WIN_PUBLIC}async/WinMutex.hpp" )
 
 # DEBUG
@@ -52,6 +53,7 @@ set( HEX_WIN_SOURCES
 	# APPLICATION
 	"${HEX_WIN_PRIVATE}app/WinApp.cpp"
 	# ASYNC
+	"${HEX_WIN_PRIVATE}async/WinMutexFactory.cpp"
 	"${HEX_WIN_PRIVATE}async/WinMutex.cpp" )
 
 # DEBUG

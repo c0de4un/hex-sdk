@@ -27,6 +27,82 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+#ifndef HEX_MEMORY_BLOCK_HPP
+#define HEX_MEMORY_BLOCK_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INCLUDES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Include hex::numeric
+#ifndef HEX_NUMERIC_HPP
+#include "../cfg/hex_numeric.hpp"
+#endif // !HEX_NUMERIC_HPP
+
+// Include hex::mutex
+#ifndef HEX_MUTEX_HPP
+#include "../cfg/hex_mutex.hpp"
+#endif // !HEX_MUTEX_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TYPES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+	namespace core
+	{
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// hex::core::MemoryBlock
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		/**
+		 * @brief
+		 * MemoryBlock - data-struct for memory-objects managment
+		 * 
+		 * @version 1.0
+		**/
+		HEX_STRUCT struct MemoryBlock
+		{
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// FIELDS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			void       *const mAddress;
+			hex_IMutex *const mMutex;
+			hex_size_t        mLength;
+			
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DELETED
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			MemoryBlock( const MemoryBlock& ) = delete;
+			MemoryBlock( MemoryBlock&& )      = delete;
+
+			MemoryBlock& operator=( const MemoryBlock& ) = delete;
+			MemoryBlock& operator=( MemoryBlock&& )      = delete;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		}; /// hex::core::MemoryBlock
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	} /// hex::core
+
+} /// hex
+
+#define HEX_MEMORY_BLOCK_DECL
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#endif // !HEX_MEMORY_BLOCK_HPP

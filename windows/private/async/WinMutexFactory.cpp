@@ -29,4 +29,51 @@
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INCLUDES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// HEADER
+#ifndef HEX_WIN_MUTEX_FACTORY_HPP
+#include "../../public/async/WinMutexFactory.hpp"
+#endif // !HEX_WIN_MUTEX_FACTORY_HPP
+
+// Include hex::win::WinMutex
+#ifndef HEX_WIN_MUTEX_HPP
+#include "../../public/async/WinMutex.hpp"
+#endif // !HEX_WIN_MUTEX_HPP
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// hex::win::WinMutexFactory
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+	namespace win
+	{
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// CONSTRUCTOR & DESTRUCTOR
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		WinMutexFactory::WinMutexFactory() HEX_NOEXCEPT = default;
+
+		WinMutexFactory::~WinMutexFactory() HEX_NOEXCEPT = default;
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// OVERRIDE: IMutexFactory
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		hex_IMutex* WinMutexFactory::Build() const
+		{ return new WinMutex(); }
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	}
+
+}
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

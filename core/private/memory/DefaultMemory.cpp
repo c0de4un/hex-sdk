@@ -29,4 +29,76 @@
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INCLUDES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// HEADER
+#ifndef HEX_CORE_DEFAULT_MEMORY_HPP
+#include "../../public/memory/DefaultMemory.hpp"
+#endif // !HEX_CORE_DEFAULT_MEMORY_HPP
+
+// DEBUG
+#ifdef HEX_DEBUG
+
+// Include hex::debug
+#ifndef HEX_DEBUG_HPP
+#include "../../public/cfg/hex_debug.hpp"
+#endif
+
+#endif
+// DEBUG
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// hex::core::DefaultMemory
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+namespace hex
+{
+
+	namespace core
+	{
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// CONSTRUCTOR & DESTRUCTOR
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		DefaultMemory::DefaultMemory()
+			:
+			mMutex( hex_MutexFactory::Build() )
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "DefaultMemory::construct", hex_ELogLevel::INFO );
+#endif // DEBUG
+		}
+
+		DefaultMemory::~DefaultMemory() HEX_NOEXCEPT
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "DefaultMemory::construct", hex_ELogLevel::INFO );
+#endif // DEBUG
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// OVERRIDE: IMemoryManager
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		void DefaultMemory::onReference( void* const pAddress, const hex_size_t pBytes )
+		{
+
+		}
+
+		void DefaultMemory::onUnreference( void* const pAddress, const hex_size_t pBytes )
+		{
+
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+	}
+
+}
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

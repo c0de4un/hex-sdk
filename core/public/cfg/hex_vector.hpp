@@ -27,6 +27,25 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+#ifndef HEX_VECTOR_HPP
+#define HEX_VECTOR_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INCLUDES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Include STL vector
+#include <vector>
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TYPES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+template <typename T>
+using hex_Vector = std::vector<T>;
+
+// = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+#endif // !HEX_VECTOR_HPP

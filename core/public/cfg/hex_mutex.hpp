@@ -37,8 +37,14 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Include hex::core::MutexFactory
+#ifndef HEX_CORE_MUTEX_FACTORY_HPP
+#include "../async/MutexFactory.hpp"
+#endif // !HEX_CORE_MUTEX_FACTORY_HPP
 
 // Include hex::core::IMutex
+#ifndef HEX_CORE_I_MUTEX_HXX
+#include "../async/IMutex.hxx"
+#endif // !HEX_CORE_I_MUTEX_HXX
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 

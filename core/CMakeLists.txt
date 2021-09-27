@@ -39,8 +39,11 @@ set( HEX_CORE_HEADERS
 	"${HEX_CORE_PUBLIC}cfg/hex_atomic.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_debug.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_memory.hpp"
+	"${HEX_CORE_PUBLIC}cfg/hex_map.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_numeric.hpp"
 	"${HEX_CORE_PUBLIC}cfg/hex_platform.hpp"
+	"${HEX_CORE_PUBLIC}cfg/hex_vector.hpp"
+	"${HEX_CORE_PUBLIC}cfg/hex_set.hpp"
 	# APPLICATION
 	"${HEX_CORE_PUBLIC}app/IApplication.hxx"
 	"${HEX_CORE_PUBLIC}app/BaseApplication.hpp"
@@ -48,12 +51,9 @@ set( HEX_CORE_HEADERS
 	# ECS
 	"${HEX_CORE_PUBLIC}ecs/systems/ISystem.hxx"
 	# MEMORY
-	"${HEX_CORE_PUBLIC}memory/IAllocator.hxx"
-	"${HEX_CORE_PUBLIC}memory/Allocator.hpp"
 	"${HEX_CORE_PUBLIC}memory/IMemoryManager.hxx"
 	"${HEX_CORE_PUBLIC}memory/MemoryManager.hpp"
-	"${HEX_CORE_PUBLIC}memory/IMemoryResource.hxx"
-	"${HEX_CORE_PUBLIC}memory/MemoryResource.hpp"
+	"${HEX_CORE_PUBLIC}memory/DefaultMemory.hpp"
 	"${HEX_CORE_PUBLIC}memory/MemoryBlock.hpp"
 	"${HEX_CORE_PUBLIC}memory/SharedPointer.hpp"
 	# ASYNC
@@ -91,9 +91,8 @@ set( HEX_CORE_SOURCES
 	# ECS
 	"${HEX_CORE_PRIVATE}ecs/systems/BaseSystem.cpp"
 	# MEMORY
-	"${HEX_CORE_PRIVATE}memory/Allocator.cpp"
 	"${HEX_CORE_PRIVATE}memory/MemoryManager.cpp"
-	"${HEX_CORE_PRIVATE}memory/MemoryResource.cpp"
+	"${HEX_CORE_PRIVATE}memory/DefaultMemory.cpp"
 	"${HEX_CORE_PRIVATE}memory/MemoryBlock.cpp"
 	"${HEX_CORE_PRIVATE}memory/SharedPointer.cpp"
 	# ASYNC

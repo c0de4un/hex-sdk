@@ -29,4 +29,13 @@
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INCLUDES
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// HEADER
+#ifndef HEX_MEMORY_BLOCK_HPP
+#include "../../public/memory/MemoryBlock.hpp"
+#endif // !HEX_MEMORY_BLOCK_HPP
+
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

@@ -38,6 +38,26 @@
 #include "../../public/app/WinApp.hpp"
 #endif // !HEX_WIN_APP_HPP
 
+// Include hex::core::DefaultMemory
+#ifndef HEX_CORE_DEFAULT_MEMORY_HPP
+#include "../../../core/public/memory/DefaultMemory.hpp"
+#endif // !HEX_CORE_DEFAULT_MEMORY_HPP
+
+// Include hex::core::MemoryManager
+#ifndef HEX_CORE_MEMORY_MANAGER_HPP
+#include "../../../core/public/memory/MemoryManager.hpp"
+#endif // !HEX_CORE_MEMORY_MANAGER_HPP
+
+// Include hex::mutex
+#ifndef HEX_MUTEX_HPP
+#include "../../../core/public/cfg/hex_mutex.hpp"
+#endif // !HEX_MUTEX_HPP
+
+// Include hex::win::WinMutexFactory
+#ifndef HEX_WIN_MUTEX_FACTORY_HPP
+#include "../../public/async/WinMutexFactory.hpp"
+#endif // !HEX_WIN_MUTEX_FACTORY_HPP
+
 // DEBUG
 #if defined( HEX_DEBUG ) || defined( DEBUG )
 
@@ -79,6 +99,76 @@ namespace hex
 #ifdef HEX_DEBUG // DEBUG
 			hex_Log::Print( "WinApp::destruct", hex_ELogLevel::INFO );
 #endif // DEBUG
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// OVERRIDE: BaseSystem
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		void WinApp::onInitialized()
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::onInitialized", hex_ELogLevel::INFO );
+#endif // DEBUG
+
+			// Initialize WinMutexFactory
+			hex_MutexFactory::Initialize( static_cast<hex_IMutexFactory*>(new hex_WinMutexFactory()) );
+
+			// Initialize DefaultMemory
+			hex_DefaultMemory* const defaultMemory_ptr( new hex_DefaultMemory() );
+			hex_IMemoryManagr* const memory_ptr( static_cast<hex_IMemoryManagr*>(defaultMemory_ptr) );
+			hex_Memory::Initialize( memory_ptr );
+
+			BaseApplication::onInitialized();
+		}
+
+		void WinApp::onTerminate() HEX_NOEXCEPT
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::onTerminate", hex_ELogLevel::INFO );
+#endif // DEBUG
+
+			BaseApplication::onTerminate();
+		}
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+		// OVERRIDE: BaseApplication
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		bool WinApp::onStart()
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::onStart", hex_ELogLevel::INFO );
+#endif // DEBUG
+
+			return BaseApplication::onStart();
+		}
+
+		bool WinApp::onResume()
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::onResume", hex_ELogLevel::INFO );
+#endif // DEBUG
+
+			return BaseApplication::onResume();
+		}
+
+		void WinApp::onPause()
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::onPause", hex_ELogLevel::INFO );
+#endif // DEBUG
+
+			BaseApplication::onPause();
+		}
+
+		void WinApp::onStop() HEX_NOEXCEPT
+		{
+#ifdef HEX_DEBUG // DEBUG
+			hex_Log::Print( "WinApp::onStop", hex_ELogLevel::INFO );
+#endif // DEBUG
+
+			BaseApplication::onStop();
 		}
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

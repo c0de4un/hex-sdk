@@ -27,8 +27,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-#ifndef HEX_CORE_I_MUTEX_FACTORY_HXX
-#define HEX_CORE_I_MUTEX_FACTORY_HXX
+#ifndef HEX_CORE_DEFAULT_MEMORY_HPP
+#define HEX_CORE_DEFAULT_MEMORY_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -36,21 +36,31 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::api
-#ifndef HEX_API_HPP
-#include "../cfg/hex_api.hpp"
-#endif // !HEX_API_HPP
+// Include hex::core::IMemoryManager
+#ifndef HEX_CORE_I_MEMORY_MANAGER_HXX
+#include "IMemoryManager.hxx"
+#endif // !HEX_CORE_I_MEMORY_MANAGER_HXX
+
+// Include hex::mutex
+#ifndef HEX_MUTEX_HPP
+#include "../cfg/hex_mutex.hpp"
+#endif // !HEX_MUTEX_HPP
+
+// Include hex::vector
+#ifndef HEX_VECTOR_HPP
+#include "../cfg/hex_vector.hpp"
+#endif // !HEX_VECTOR_HPP
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // FORWARD-DECLARATIONS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Forward-Declare hex::core::IMutex
-#ifndef HEX_CORE_I_MUTEX_DECL
-#define HEX_CORE_I_MUTEX_DECL
-namespace hex { namespace core { class IMutex; } }
-using hex_IMutex = hex::core::IMutex;
-#endif // !HEX_CORE_I_MUTEX_DECL
+// Forward-Declare hex::core::MemoryBlock
+#ifndef HEX_CORE_MEMORY_BLOCK_DECL
+#define HEX_CORE_MEMORY_BLOCK_DECL
+namespace hex { namespace core { class MemoryBlock; } }
+using hex_MemoryBlock = hex::core::MemoryBlock;
+#endif // !HEX_CORE_MEMORY_BLOCK_DECL
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -65,16 +75,16 @@ namespace hex
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// hex::core::IMutexFactory
+		// hex::core::DefaultMemory
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		/**
 		 * @brief
-		 * IMutexFactory - mutex factory contract
+		 * DefaultMemory - simple base memory manager
 		 * 
 		 * @version 1.0
 		**/
-		HEX_API class IMutexFactory
+		HEX_API class DefaultMemory final : public hex_IMemoryManagr
 		{
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,7 +93,29 @@ namespace hex
 			// META
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			HEX_INTERFACE
+			HEX_CLASS
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		protected:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// FIELDS
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			hex_IMutex* mMutex;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DELETED
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			DefaultMemory( const DefaultMemory& ) = delete;
+			DefaultMemory( DefaultMemory&& )      = delete;
+
+			DefaultMemory& operator=( const DefaultMemory& ) = delete;
+			DefaultMemory& operator=( DefaultMemory&& )      = delete;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -92,27 +124,53 @@ namespace hex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// DESTRUCTOR
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-			virtual ~IMutexFactory() HEX_NOEXCEPT = default;
-
-			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// METHOD
+			// CONSTRUCTOR & DESTRUCTOR
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			/**
 			 * @brief
-			 * Build IMutex implementor instance
+			 * DefaultMemory constructor
 			 * 
-			 * @thread_safety - not required
 			 * @throws - can throw exception
 			**/
-			virtual hex_IMutex* Build() const = 0;
+			explicit DefaultMemory();
+
+			/**
+			 * @brief
+			 * DefaultMemory destructor
+			 * 
+			 * @throws - no exceptions
+			**/
+			virtual ~DefaultMemory() HEX_NOEXCEPT;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// OVERRIDE: IMemoryManager
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * Called to add reference to Object
+			 * 
+			 * @param pAddress - Object address
+			 * @param pBytes - Object length in bytes
+			 * 
+			 * @throws - can throw exception
+			 * @thread_safety - thread-locks used
+			**/
+			virtual void onReference( void* const pAddress, const hex_size_t pBytes ) final;
+
+			/**
+			 * @brief
+			 * Called to remove reference to Object
+			 * 
+			 * @throws - can throw exception
+			 * @thread_safety - thread-locks used
+			**/
+			virtual void onUnreference( void* const pAddress, const hex_size_t pBytes ) final;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		}; /// hex::core::IMutexFactory
+		}; /// hex::core::DefaultMemory
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -120,10 +178,10 @@ namespace hex
 
 } /// hex
 
-using hex_IMutexFactory = hex::core::IMutexFactory;
+using hex_DefaultMemory = hex::core::DefaultMemory;
 
-#define HEX_CORE_I_MUTEX_FACTORY_DECL
+#define HEX_CORE_DEFAULT_MEMORY_DECL
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif // !HEX_CORE_I_MUTEX_FACTORY_HXX
+#endif // !HEX_CORE_DEFAULT_MEMORY_HPP

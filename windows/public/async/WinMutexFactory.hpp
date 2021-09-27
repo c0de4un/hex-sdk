@@ -27,8 +27,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 **/
 
-#ifndef HEX_CORE_I_MUTEX_FACTORY_HXX
-#define HEX_CORE_I_MUTEX_FACTORY_HXX
+#ifndef HEX_WIN_MUTEX_FACTORY_HPP
+#define HEX_WIN_MUTEX_FACTORY_HPP
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
@@ -36,21 +36,10 @@
 // INCLUDES
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Include hex::api
-#ifndef HEX_API_HPP
-#include "../cfg/hex_api.hpp"
-#endif // !HEX_API_HPP
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// FORWARD-DECLARATIONS
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// Forward-Declare hex::core::IMutex
-#ifndef HEX_CORE_I_MUTEX_DECL
-#define HEX_CORE_I_MUTEX_DECL
-namespace hex { namespace core { class IMutex; } }
-using hex_IMutex = hex::core::IMutex;
-#endif // !HEX_CORE_I_MUTEX_DECL
+// Include hex::core::IMutexFactory
+#ifndef HEX_CORE_I_MUTEX_FACTORY_HXX
+#include "../../../core/public/async/IMutexFactory.hxx"
+#endif // !HEX_CORE_I_MUTEX_FACTORY_HXX
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TYPES
@@ -59,22 +48,22 @@ using hex_IMutex = hex::core::IMutex;
 namespace hex
 {
 
-	namespace core
+	namespace win
 	{
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		// hex::core::IMutexFactory
+		// hex::win::WinMutexFactory
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 		/**
 		 * @brief
-		 * IMutexFactory - mutex factory contract
+		 * WinMutexFactory - mutex factory for Windows platform
 		 * 
 		 * @version 1.0
 		**/
-		HEX_API class IMutexFactory
+		HEX_API class WinMutexFactory final : public hex_IMutexFactory
 		{
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -83,7 +72,23 @@ namespace hex
 			// META
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			HEX_INTERFACE
+			HEX_CLASS
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		private:
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// DELETED
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			WinMutexFactory( const WinMutexFactory& ) = delete;
+			WinMutexFactory( WinMutexFactory&& )      = delete;
+
+			WinMutexFactory& operator=( const WinMutexFactory& ) = delete;
+			WinMutexFactory& operator=( WinMutexFactory&& )      = delete;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -92,13 +97,27 @@ namespace hex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// DESTRUCTOR
+			// CONSTRUCTOR & DESTRUCTOR
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-			virtual ~IMutexFactory() HEX_NOEXCEPT = default;
+			/**
+			 * @brief
+			 * WinMutexFactory
+			 * 
+			 * @throws - no exception
+			**/
+			explicit WinMutexFactory() HEX_NOEXCEPT;
+
+			/**
+			 * @brief
+			 * WinMutexFactory destructor
+			 * 
+			 * @throws - no exceptions
+			**/
+			virtual ~WinMutexFactory() HEX_NOEXCEPT;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-			// METHOD
+			// OVERRIDE: IMutexFactory
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			/**
@@ -108,22 +127,20 @@ namespace hex
 			 * @thread_safety - not required
 			 * @throws - can throw exception
 			**/
-			virtual hex_IMutex* Build() const = 0;
+			virtual hex_IMutex* Build() const final;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-		}; /// hex::core::IMutexFactory
+		}; /// hex::win::WinMutexFactory
 
 		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-	} /// hex::core
+	} /// hex::win
 
 } /// hex
 
-using hex_IMutexFactory = hex::core::IMutexFactory;
-
-#define HEX_CORE_I_MUTEX_FACTORY_DECL
+using hex_WinMutexFactory = hex::win::WinMutexFactory;
 
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-#endif // !HEX_CORE_I_MUTEX_FACTORY_HXX
+#endif // !HEX_WIN_MUTEX_FACTORY_HPP

@@ -96,6 +96,48 @@ namespace hex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+			// OVERRIDE: BaseApplication
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * Called to Start System
+			 * 
+			 * @thread_safety - atomics used
+			 * @return - 'true' if OK
+			 * @throws - can throw exception
+			**/
+			virtual bool onStart() final;
+
+			/**
+			 * @brief
+			 * Called to Resume System
+			 * 
+			 * @thread_safety - atomics used
+			 * @return - 'true' if OK
+			 * @throws - can throw exception
+			**/
+			virtual bool onResume() final;
+
+			/**
+			 * @brief
+			 * Called to Pause System
+			 * 
+			 * @thread_safety - atomics used
+			 * @throws - can throw exception
+			**/
+			virtual void onPause() final;
+
+			/**
+			 * @brief
+			 * Called to Stop System
+			 * 
+			 * @thread_safety - atomics used
+			 * @throws - no exceptions
+			**/
+			virtual void onStop() HEX_NOEXCEPT final;
+
+			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// DELETED
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -134,6 +176,23 @@ namespace hex
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 			// OVERRIDE: BaseSystem
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+			/**
+			 * @brief
+			 * Called when instance set as current
+			 * 
+			 * @thread_safety - main-thread only
+			 * @throws - can throw exception
+			**/
+			virtual void onInitialized() override;
+
+			/**
+			 * @brief
+			 * 
+			 * @thread_safety - main-thread only
+			 * @throws - no exceptions
+			**/
+			virtual void onTerminate() HEX_NOEXCEPT override;
 
 			// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
